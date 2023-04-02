@@ -14,7 +14,7 @@ export const Loading = ({text}) => {
       <Text
         style={{
           color: 'white',
-          fontWeight: 400,
+          fontWeight: '400',
           fontSize: 16,
           marginTop: 20,
         }}>
