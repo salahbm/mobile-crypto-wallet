@@ -118,7 +118,7 @@ const App = () => {
         )
           .then(response => response.json())
           .then(data => data.ethereum.usd);
-        const balanceInUSD = (tokenBalance * exchangeRate).toFixed(4);
+        const balanceInUSD = (tokenBalance * exchangeRate).toFixed(3);
         setTokenUSD(balanceInUSD);
       } catch (error) {
         console.log(error);
