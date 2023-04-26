@@ -34,7 +34,7 @@ const Settings = ({navigation}) => {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-around',
-          paddingTop: 50,
+          paddingTop: height >= 800 ? 50 : 20,
           marginBottom: 20,
         }}>
         <Text style={styles.header}>Settings</Text>
@@ -109,7 +109,7 @@ const MoreScreenBtn = ({onPress, btnName, btnTxt, color}) => {
 };
 
 export default Settings;
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
