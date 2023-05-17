@@ -9,16 +9,22 @@ import {
   Image,
   Platform,
 } from 'react-native';
+import {ethers} from 'ethers';
 import * as Animatable from 'react-native-animatable';
 import {COLORS, icons, SIZES} from '../constants';
 import {DataContext} from '../App';
-import {useBalances} from '../ethersJS/useBalances';
 import {FlatList} from 'react-native-gesture-handler';
 import {providerList} from '../ethersJS/providerslist';
+import {useProvbalance} from '../ethersJS/useList';
 const Transactions = ({navigation}) => {
-  const {toggleNetwork, netColor, provider, network} = useContext(DataContext);
-  const [tokenBalance, balanceInUSD] = useBalances();
+  const {toggleNetwork, netColor, loggedInUser, network} =
+    useContext(DataContext);
 
+  const {listBalance} = useProvbalance({
+    provider: providerList.url,
+    loggedInUser: loggedInUser.address,
+  });
+  console.log(providerList.url);
   return (
     <View
       style={{
@@ -120,38 +126,25 @@ const Transactions = ({navigation}) => {
           flexDirection: 'row',
           alignItems: 'center',
           marginTop: 20,
-          paddingHorizontal: 30,
+          alignSelf: 'center',
         }}
         animation="bounceInUp">
         <Text
           style={{
             color: netColor,
-
             fontSize: 20,
             fontWeight: 'bold',
-            flex: 1,
           }}>
-          {network} token:
-        </Text>
-
-        <Image
-          source={icons.eth}
-          style={{
-            width: 30,
-            height: 30,
-            tintColor: 'gray1',
-          }}
-        />
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 20,
-            paddingLeft: 5,
-          }}>
-          {/* {tokenBalance} */}
+          Your Current Network: {network}
         </Text>
       </Animatable.View>
       <Animatable.View>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={listBalance}
+          renderItem={Networks}
+          keyExtractor={item => item.id}
+        />
         <FlatList
           showsVerticalScrollIndicator={false}
           data={providerList}
@@ -164,7 +157,7 @@ const Transactions = ({navigation}) => {
 };
 
 export default Transactions;
-const Networks = item => {
+const Networks = ({item}) => {
   return (
     <View
       style={{
