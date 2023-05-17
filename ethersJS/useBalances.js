@@ -14,13 +14,11 @@ export const useBalances = () => {
         await provider.getBalance(loggedInUser?.address)
       ).toString();
       const formatted = ethers.utils.formatUnits(balance, 'ether');
-
-      setTokenBalance(formatted);
+      const formattedWithDecimals = Number.parseFloat(formatted).toFixed(3);
+      setTokenBalance(formattedWithDecimals);
     }
 
-    if (loggedInUser !== undefined) {
-      getBalance();
-    }
+    getBalance();
   }, [provider, loggedInUser]);
 
   useEffect(() => {

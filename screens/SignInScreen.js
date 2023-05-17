@@ -71,6 +71,7 @@ const SignInScreen = ({navigation}) => {
       if (users) {
         parsedUsers = JSON.parse(users);
       }
+      console.log(users);
       const user = parsedUsers.find(
         user => user.password === password && user.username === username,
       );
@@ -84,9 +85,14 @@ const SignInScreen = ({navigation}) => {
         setUsername('');
         // Clear the username and password fields
       } else {
-        console.log('Incorrect username or password');
+        Alert.alert('Error', 'Incorrect Password or username', [
+          {
+            text: 'Cancel',
+
+            style: 'cancel',
+          },
+        ]);
         setPassword('');
-        setUsername('');
       }
     } catch (error) {
       console.log(error);

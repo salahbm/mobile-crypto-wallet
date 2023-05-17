@@ -27,7 +27,7 @@ const Home = () => {
   const [searchedText, setSearchedText] = useState([]);
   const [tokenBalance, tokenUSD] = useBalances();
   const [toggleNetwork, netColor, provider, network] = useProviders();
-
+  console.log(tokenUSD, tokenBalance);
   // getting tokens through coingecko api
   useEffect(() => {
     const fetchData = async () => {
