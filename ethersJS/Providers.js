@@ -32,6 +32,22 @@ export const useProviders = () => {
     } else if (network === 'Polygon') {
       setProvider(
         new ethers.providers.StaticJsonRpcProvider(
+          'https://data-seed-prebsc-1-s1.binance.org:8545/QFFPDBA1HKFQG8IB9PM1HZ4YR5UFMATBEQ',
+        ),
+      );
+      setNetwork('Binance');
+      setNetColor('yellow');
+    } else if (network === 'Binance') {
+      setProvider(
+        new ethers.providers.StaticJsonRpcProvider(
+          'https://eth-sepolia.g.alchemy.com/v2/2cvWsxQJ8A0TPOd-_V4eKlAQi6MI71DU',
+        ),
+      );
+      setNetwork('Sepolia');
+      setNetColor('blue');
+    } else if (network === 'Sepolia') {
+      setProvider(
+        new ethers.providers.StaticJsonRpcProvider(
           'https://opt-goerli.g.alchemy.com/v2/wWoEinTD6ok4yN7n5ff5wPi4eUIYF4ET',
         ),
       );

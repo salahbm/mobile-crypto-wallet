@@ -19,15 +19,15 @@ import Chart from '../components/Chart';
 import {COLORS, icons} from '../constants';
 import {useBalances} from '../ethersJS/useBalances';
 import {Loading} from '../components/Loading';
-import {useProviders} from '../ethersJS/Providers';
+import {DataContext} from '../App';
 const Home = () => {
+  const {toggleNetwork, netColor, provider, network} = useContext(DataContext);
   const [loading, setLoading] = useState(true);
   const [coin, setCoin] = useState([]);
   const [searchedCoin, setSearchedCoin] = useState([]);
   const [searchedText, setSearchedText] = useState([]);
   const [tokenBalance, tokenUSD] = useBalances();
-  const [toggleNetwork, netColor, provider, network] = useProviders();
-  console.log(tokenUSD, tokenBalance);
+
   // getting tokens through coingecko api
   useEffect(() => {
     const fetchData = async () => {
@@ -41,12 +41,10 @@ const Home = () => {
         console.error(error);
       }
     };
-
     const timer = setTimeout(() => {
       fetchData();
       setLoading(false);
-    }, 1000); // 10 second delay between requests
-
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 

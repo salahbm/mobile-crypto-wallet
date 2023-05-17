@@ -19,7 +19,8 @@ import {useProviders} from './ethersJS/Providers';
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [provider] = useProviders();
+  const [toggleNetwork, netColor, provider, network] = useProviders();
+  // const {toggleNetwork, netColor, provider, network} = 0;
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -53,11 +54,13 @@ const App = () => {
   return (
     <DataContext.Provider
       value={{
-        provider,
-
         handleLogout,
         loggedInUser,
         setLoggedInUser,
+        toggleNetwork,
+        netColor,
+        provider,
+        network,
       }}>
       <NavigationContainer>
         {loading ? <Loading /> : loggedInUser ? <Tabs /> : <RootStackScreen />}

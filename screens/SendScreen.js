@@ -16,18 +16,16 @@ import {
 import * as Animatable from 'react-native-animatable';
 import {COLORS, icons, FONTS} from '../constants';
 import {DataContext} from '../App';
-
+import {useProviders} from '../ethersJS/Providers';
 const SendScreen = ({navigation}) => {
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
   const [status, setStatus] = useState(undefined);
   const [result, onChangeResult] = useState('(result)');
-  const {tokenBalance, wallet, tokenUSD} = useContext(DataContext);
+  const {tokenBalance, wallet, toggleNetwork, netColor, provider, network} =
+    useContext(DataContext);
 
   // Connection
-  const provider = new ethers.providers.JsonRpcProvider(
-    'https://eth-mainnet.g.alchemy.com/v2/JWDQNWpuTdABpcaT8qe5vdvEw7KPdl-T',
-  );
 
   async function sendTx() {
     // const gasPrice = await provider.getGasPrice();
@@ -97,6 +95,17 @@ const SendScreen = ({navigation}) => {
         style={styles.views}
         animation="bounceInLeft"
         duration={1500}>
+        <Text style={styles.text}>Provider:</Text>
+
+        <Text style={styles.text1} ellipsizeMode="middle" numberOfLines={1}>
+          {network}
+        </Text>
+      </Animatable.View>
+
+      <Animatable.View
+        style={styles.views}
+        animation="bounceInLeft"
+        duration={1500}>
         <Text style={styles.text}>From:</Text>
         <TouchableOpacity onPress={() => Clipboard.setString(wallet?.address)}>
           <Text style={styles.text1} ellipsizeMode="middle" numberOfLines={1}>
@@ -104,24 +113,24 @@ const SendScreen = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </Animatable.View>
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', marginTop: 40, alignItems: 'center'}}>
         <Animatable.View
           style={{
-            paddingLeft: 15,
-            marginTop: 40,
             flexDirection: 'row',
-            justifyContent: 'space-around',
+            justifyContent: 'space-between',
             borderWidth: 1,
             alignItems: 'center',
             borderColor: COLORS.powderBlue,
-            width: '90%',
+            width: '87%',
+            paddingHorizontal: 10,
+            height: 50,
           }}
           animation="bounceInRight"
           duration={1500}>
-          <Text style={[styles.text, {paddingLeft: 14}]}>To:</Text>
+          <Text style={styles.text}>To:</Text>
           <TouchableOpacity>
             <TextInput
-              style={[styles.text1, {paddingLeft: 33}]}
+              style={styles.text1}
               ellipsizeMode="middle"
               numberOfLines={1}
               placeholder="Recepient"
@@ -132,8 +141,7 @@ const SendScreen = ({navigation}) => {
         </Animatable.View>
         <Animatable.View
           style={{
-            marginTop: 45,
-            paddingLeft: 5,
+            marginLeft: 15,
           }}
           animation="bounceInRight"
           duration={1500}>
@@ -203,13 +211,14 @@ const SendScreen = ({navigation}) => {
 export default SendScreen;
 const styles = StyleSheet.create({
   views: {
-    paddingLeft: 15,
-    marginTop: 40,
+    paddingHorizontal: 15,
+    marginTop: 30,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     borderWidth: 1,
     alignItems: 'center',
     borderColor: COLORS.powderBlue,
+    height: 50,
   },
   text: {
     color: COLORS.white,
@@ -220,6 +229,5 @@ const styles = StyleSheet.create({
     color: COLORS.bluish,
     fontSize: 20,
     fontWeight: '500',
-    width: 150,
   },
 });

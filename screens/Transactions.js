@@ -10,13 +10,15 @@ import {
   Platform,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {ethers} from 'ethers';
-import {COLORS, icons, SIZES, FONTS} from '../constants';
-import {useProviders} from '../ethersJS/Providers';
+import {COLORS, icons, SIZES} from '../constants';
+import {DataContext} from '../App';
 import {useBalances} from '../ethersJS/useBalances';
+import {FlatList} from 'react-native-gesture-handler';
+import {providerList} from '../ethersJS/providerslist';
 const Transactions = ({navigation}) => {
-  const [toggleNetwork, netColor, provider, network] = useProviders();
+  const {toggleNetwork, netColor, provider, network} = useContext(DataContext);
   const [tokenBalance, balanceInUSD] = useBalances();
+
   return (
     <View
       style={{
@@ -146,11 +148,37 @@ const Transactions = ({navigation}) => {
             fontSize: 20,
             paddingLeft: 5,
           }}>
-          {tokenBalance}
+          {/* {tokenBalance} */}
         </Text>
+      </Animatable.View>
+      <Animatable.View>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={providerList}
+          renderItem={Networks}
+          keyExtractor={item => item.id}
+        />
       </Animatable.View>
     </View>
   );
 };
 
 export default Transactions;
+const Networks = item => {
+  return (
+    <View
+      style={{
+        paddingHorizontal: 24,
+      }}>
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: 'bold',
+          flex: 1,
+          color: '#FFFF',
+        }}>
+        {item.name}
+      </Text>
+    </View>
+  );
+};
