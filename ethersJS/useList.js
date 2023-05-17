@@ -1,20 +1,24 @@
 import {ethers} from 'ethers';
-import React, {useState, useEffect} from 'react';
-export const useProvbalance = ({provider, loggedInUser}) => {
-  const [listBalance, setListBalance] = useState(0);
+import React, {useState, useEffect, useContext} from 'react';
+import {DataContext} from '../App';
+import {providerList} from './providerslist';
+export const useProvbalance = () => {
+  const {loggedInUser} = useContext(DataContext);
+  const [listBalance, setListBalance] = useState([]);
 
   useEffect(() => {
-    async function getBalance() {
-      const balance = (
-        await provider.getBalance(loggedInUser?.address)
-      ).toString();
-      const formatted = ethers.utils.formatUnits(balance, 'ether');
-      const formattedWithDecimals = Number.parseFloat(formatted).toFixed(3);
-      setListBalance(formattedWithDecimals);
-    }
-
-    getBalance();
-  }, [loggedInUser]); // Add loggedInUser as a dependency to the useEffect dependency array
+    const fetchBalances = async () => {
+      const promises = providerList.map(async provider => {
+        const balance = await provider.getBalance(loggedInUser?.address);
+        const formatted = ethers.utils.formatUnits(balance, 'ether');
+        const rounded = Number.parseFloat(formatted).toFixed(3);
+        return rounded;
+      });
+      const balances = await Promise.all(promises);
+      setListBalance(balances);
+    };
+    fetchBalances();
+  }, [providerList, loggedInUser]);
 
   return [listBalance];
 };

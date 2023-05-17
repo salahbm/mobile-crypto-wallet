@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useMemo, useState} from 'react';
 import {
   Button,
   View,
@@ -9,7 +9,6 @@ import {
   Image,
   Platform,
 } from 'react-native';
-import {ethers} from 'ethers';
 import * as Animatable from 'react-native-animatable';
 import {COLORS, icons, SIZES} from '../constants';
 import {DataContext} from '../App';
@@ -17,14 +16,15 @@ import {FlatList} from 'react-native-gesture-handler';
 import {providerList} from '../ethersJS/providerslist';
 import {useProvbalance} from '../ethersJS/useList';
 const Transactions = ({navigation}) => {
-  const {toggleNetwork, netColor, loggedInUser, network} =
-    useContext(DataContext);
-
-  const {listBalance} = useProvbalance({
-    provider: providerList.url,
-    loggedInUser: loggedInUser.address,
-  });
-  console.log(providerList.url);
+  const {toggleNetwork, netColor, network} = useContext(DataContext);
+  const [listBalance] = useProvbalance();
+  const renderItem = ({item}) => (
+    <View>
+      {console.log(listBalance, '======')}
+      {console.log(item)}
+      <Text>{item}</Text>
+    </View>
+  );
   return (
     <View
       style={{
@@ -140,9 +140,8 @@ const Transactions = ({navigation}) => {
       </Animatable.View>
       <Animatable.View>
         <FlatList
-          showsVerticalScrollIndicator={false}
           data={listBalance}
-          renderItem={Networks}
+          renderItem={renderItem}
           keyExtractor={item => item.id}
         />
         <FlatList
