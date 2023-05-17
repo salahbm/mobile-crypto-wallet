@@ -13,18 +13,21 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Platform,
+  SafeAreaView,
 } from 'react-native';
 import Chart from '../components/Chart';
 import {COLORS, icons} from '../constants';
-import {DataContext} from '../App';
+import {useBalances} from '../ethersJS/useBalances';
 import {Loading} from '../components/Loading';
-
+import {useProviders} from '../ethersJS/Providers';
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [coin, setCoin] = useState([]);
   const [searchedCoin, setSearchedCoin] = useState([]);
   const [searchedText, setSearchedText] = useState([]);
-  const {tokenBalance, wallet, tokenUSD} = useContext(DataContext);
+  const [tokenBalance, tokenUSD] = useBalances();
+  const [toggleNetwork, netColor, provider, network] = useProviders();
+
   // getting tokens through coingecko api
   useEffect(() => {
     const fetchData = async () => {
@@ -63,74 +66,77 @@ const Home = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View
         style={{
           backgroundColor: COLORS.powderBlue,
           borderBottomLeftRadius: 40,
           borderBottomRightRadius: 40,
+          paddingBottom: 10,
+          justifyContent: 'center',
         }}>
-        <View style={{flexDirection: 'row'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: 20,
+          }}>
           <Text
             style={{
               color: COLORS.white,
-              paddingLeft: 50,
-              fontSize: 30,
+
+              fontSize: 25,
               fontWeight: 'bold',
-              paddingTop: Platform.OS === 'ios' ? 35 : 10,
             }}>
             Balance:
           </Text>
-          <Text
-            style={{
-              color: 'yellow',
-              fontSize: 20,
-              paddingLeft: 30,
-              paddingTop: Platform.OS === 'ios' ? 45 : 10,
-            }}>
-            {'$'}
-          </Text>
-          <Text
-            style={{
-              color: 'black',
-              fontSize: 20,
-              paddingLeft: 5,
-              paddingTop: Platform.OS === 'ios' ? 45 : 10,
-            }}>
-            {tokenUSD}
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', paddingTop: 10}}>
-          <Text
-            style={{
-              color: COLORS.white,
-              paddingLeft: 50,
-              fontSize: 30,
-              fontWeight: 'bold',
-              paddingBottom: 5,
-            }}>
-            Token:
-          </Text>
-          <Image
-            source={icons.eth}
-            style={{
-              width: 30,
-              height: 30,
-              tintColor: 'gray1',
-              marginTop: 5,
-              marginLeft: 40,
-            }}
-          />
 
           <Text
             style={{
               color: 'black',
               fontSize: 20,
               paddingLeft: 5,
-              paddingTop: 10,
             }}>
-            {tokenBalance}
+            {'$'} {tokenUSD}
           </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            // justifyContent: 'space-between',
+            paddingHorizontal: 20,
+          }}>
+          <Text
+            style={{
+              color: COLORS.white,
+
+              fontSize: 25,
+              fontWeight: 'bold',
+              flex: 1,
+            }}>
+            {network}:
+          </Text>
+          <>
+            <Image
+              source={icons.eth}
+              style={{
+                width: 30,
+                height: 30,
+                tintColor: 'gray1',
+                marginRight: 7,
+              }}
+            />
+
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 20,
+              }}>
+              {tokenBalance}
+            </Text>
+          </>
         </View>
       </View>
       <View
@@ -204,7 +210,7 @@ const Home = () => {
             : coin[0]?.sparkline_in_7d?.price
         }
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
