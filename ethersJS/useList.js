@@ -9,6 +9,7 @@ export const useProvbalance = () => {
   useEffect(() => {
     const fetchBalances = async () => {
       const promises = providerList.map(async provider => {
+        console.log(provider);
         const balance = await provider.getBalance(loggedInUser?.address);
         const formatted = ethers.utils.formatUnits(balance, 'ether');
         const rounded = Number.parseFloat(formatted).toFixed(3);

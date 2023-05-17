@@ -92,9 +92,11 @@ const Home = () => {
 
           <Text
             style={{
-              color: 'black',
               fontSize: 20,
               paddingLeft: 5,
+              color: '#ffff',
+              fontWeight: '600',
+              letterSpacing: 1,
             }}>
             USD {tokenUSD}
           </Text>
@@ -129,8 +131,11 @@ const Home = () => {
 
             <Text
               style={{
-                color: 'black',
                 fontSize: 20,
+                paddingLeft: 5,
+                color: '#ffff',
+                fontWeight: '600',
+                letterSpacing: 1,
               }}>
               {tokenBalance}
             </Text>

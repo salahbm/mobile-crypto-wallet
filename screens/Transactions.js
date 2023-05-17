@@ -17,14 +17,7 @@ import {providerList} from '../ethersJS/providerslist';
 import {useProvbalance} from '../ethersJS/useList';
 const Transactions = ({navigation}) => {
   const {toggleNetwork, netColor, network} = useContext(DataContext);
-  const [listBalance] = useProvbalance();
-  const renderItem = ({item}) => (
-    <View>
-      {console.log(listBalance, '======')}
-      {console.log(item)}
-      <Text>{item}</Text>
-    </View>
-  );
+
   return (
     <View
       style={{
@@ -122,6 +115,7 @@ const Transactions = ({navigation}) => {
         />
       </TouchableOpacity>
       <Animatable.View
+        duration={1000}
         style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -134,20 +128,17 @@ const Transactions = ({navigation}) => {
             color: netColor,
             fontSize: 20,
             fontWeight: 'bold',
+            marginBottom: 10,
           }}>
           Your Current Network: {network}
         </Text>
       </Animatable.View>
-      <Animatable.View>
-        <FlatList
-          data={listBalance}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
+      <Animatable.View animation="bounceInUp" duration={1000}>
         <FlatList
           showsVerticalScrollIndicator={false}
           data={providerList}
           renderItem={Networks}
+          scrollEnabled={false}
           keyExtractor={item => item.id}
         />
       </Animatable.View>
@@ -161,15 +152,34 @@ const Networks = ({item}) => {
     <View
       style={{
         paddingHorizontal: 24,
+        marginVertical: 5,
+        borderRadius: 12,
+        borderColor: '#ffff',
+        borderWidth: 1,
+        width: '90%',
+        alignSelf: 'center',
+        height: 35,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center',
       }}>
       <Text
         style={{
           fontSize: 20,
           fontWeight: 'bold',
-          flex: 1,
+
           color: '#FFFF',
         }}>
         {item.name}
+      </Text>
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: 'bold',
+
+          color: '#FFFF',
+        }}>
+        0.000
       </Text>
     </View>
   );
