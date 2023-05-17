@@ -137,7 +137,7 @@ const Home = () => {
                 fontWeight: '600',
                 letterSpacing: 1,
               }}>
-              {tokenBalance}
+              {tokenBalance}.000
             </Text>
           </>
         </View>
