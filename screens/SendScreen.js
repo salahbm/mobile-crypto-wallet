@@ -16,32 +16,28 @@ import {
 import * as Animatable from 'react-native-animatable';
 import {COLORS, icons, FONTS} from '../constants';
 import {DataContext} from '../App';
-import {useProviders} from '../ethersJS/Providers';
 const SendScreen = ({navigation}) => {
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
   const [status, setStatus] = useState(undefined);
   const [result, onChangeResult] = useState('(result)');
-  const {tokenBalance, wallet, toggleNetwork, netColor, provider, network} =
-    useContext(DataContext);
+  const {loggedInUser, provider, network} = useContext(DataContext);
 
   // Connection
 
   async function sendTx() {
     // const gasPrice = await provider.getGasPrice();
     // const gasPrice = ethers.utils.parseUnits('5', 'gwei');
-    const signer = new ethers.Wallet(wallet.privateKey);
-
+    const signer = new ethers.loggedInUser(loggedInUser.privateKey);
     const tx = {
-      from: wallet.address,
+      from: loggedInUser.address,
       to: recipient,
       value: ethers.utils.parseUnits(amount, 'ether'),
       //value: ethers.utils.parseEther('0.1'),
       // gasPrice: gasPrice,
       gasPrice: ethers.utils.hexlify(5000000000),
-
       gasLimit: ethers.utils.hexlify(21000),
-      nonce: await provider.getTransactionCount(wallet.address, 'latest'),
+      nonce: await provider.getTransactionCount(loggedInUser.address, 'latest'),
     };
 
     const signed = await signer.signTransaction(tx);
@@ -107,11 +103,13 @@ const SendScreen = ({navigation}) => {
         animation="bounceInLeft"
         duration={1500}>
         <Text style={styles.text}>From:</Text>
-        <TouchableOpacity onPress={() => Clipboard.setString(wallet?.address)}>
-          <Text style={styles.text1} ellipsizeMode="middle" numberOfLines={1}>
-            {wallet?.address}
-          </Text>
-        </TouchableOpacity>
+
+        <Text
+          style={[styles.text1, {width: 170}]}
+          ellipsizeMode="middle"
+          numberOfLines={1}>
+          {loggedInUser?.address}
+        </Text>
       </Animatable.View>
       <View style={{flexDirection: 'row', marginTop: 40, alignItems: 'center'}}>
         <Animatable.View

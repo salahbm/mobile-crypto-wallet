@@ -96,7 +96,7 @@ const Home = () => {
               fontSize: 20,
               paddingLeft: 5,
             }}>
-            {'$'} {tokenUSD}
+            USD {tokenUSD}
           </Text>
         </View>
         <View
@@ -143,9 +143,8 @@ const Home = () => {
           placeholder="Seach Token"
           placeholderTextColor={'white'}
           textAlign="center"
+          autoCapitalize="none"
           style={{
-            borderWidth: 1,
-
             backgroundColor: COLORS.powderBlue,
             borderRadius: 20,
             width: 300,
